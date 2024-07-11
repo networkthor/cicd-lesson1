@@ -22,7 +22,7 @@ jobs:
         - name: build new image
           run: |
             commit_short_hash=$(git rev-parse --short=5 HEAD)
-            new_tag = ${{  env.BUILD_NUMBER }}-$commit_short_hash
+            new_tag=${{  env.BUILD_NUMBER }}-$commit_short_hash
             docker build -t networkthor/webserver-cicd:$new_tag .
         
         - name: push to registry
