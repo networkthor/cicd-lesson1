@@ -9,10 +9,12 @@ on: [push]
 
 
 jobs:
-  test-build:
-    runs-on: ubuntu-latest
-    steps:
-    #   - uses: actions/checkout@v4
-    - name: print the current folder structure
-      run: ls -la
+    test-build:
+        runs-on: ubuntu-latest
+        steps:
+        - name: clone repo
+          uses: actions/checkout@v4
+
+        - name: print the current folder structure
+          run: ls -la
 
