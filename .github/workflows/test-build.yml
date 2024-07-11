@@ -18,13 +18,18 @@ jobs:
 
         - name: login to registry
           run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }}  --password-stdin
-        
-        - name: build new image
+
+        - name: generate new version
           run: |
             commit_short_hash=$(git rev-parse --short=5 HEAD)
             new_tag=${{  env.BUILD_NUMBER }}-$commit_short_hash
-            docker build -t networkthor/webserver-cicd:$new_tag .
+            echo "NEW_VERSION=$new_tag" >> $GITHUB_ENV
+        
+        - name: build new image
+          run: |
+            docker build -t networkthor/webserver-cicd:$NEW_VERSION .
         
         - name: push to registry
-          run: docker push networkthor/webserver-cicd:$new_tag
+          run: |
+            docker push networkthor/webserver-cicd:$NEW_VERSION
 
