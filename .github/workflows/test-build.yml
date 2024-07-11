@@ -1,6 +1,6 @@
 name: Test build
 
-run-name: ${{ github.actor }} is executing Test build
+run-name: ${{ github.actor }} is executing Test build on ${{ inputs.ENV_NAME }} environment
 
 
 
@@ -8,6 +8,15 @@ on:
     push:
     workflow_dispatch:
         inputs:
+          ENV_NAME:
+            description: 'Environment name'
+            required: true
+            type: choice
+            default: dev
+            options:
+            - dev
+            - staging
+            - production
           MANUAL_RUN:
             description: 'Run manually?'
             required: false
@@ -33,7 +42,7 @@ jobs:
         - name: generate new version
           run: |
             commit_short_hash=$(git rev-parse --short=5 HEAD)
-            new_tag=${{  env.BUILD_NUMBER }}-$commit_short_hash
+            new_tag=${{ inputs.ENV_NAME }}-${{  env.BUILD_NUMBER }}-$commit_short_hash
             echo "NEW_VERSION=$new_tag" >> $GITHUB_ENV
         
         - name: Build and push
