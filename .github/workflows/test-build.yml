@@ -13,6 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     #   - uses: actions/checkout@v4
-    - name: echo text
-      run: echo "This is my first pipeline"
+    - name: print the current folder structure
+      run: ls -la
 
