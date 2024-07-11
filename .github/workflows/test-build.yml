@@ -1,0 +1,18 @@
+name: Test build
+
+run-name: ${{ github.actor }} is executing Test build
+
+
+
+on: [push]
+
+
+
+jobs:
+  test-build:
+    runs-on: ubuntu-latest
+    steps:
+    #   - uses: actions/checkout@v4
+    - name: echo text
+      run: echo "This is my first pipeline"
+
