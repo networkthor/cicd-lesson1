@@ -32,7 +32,7 @@ jobs:
           uses: docker/build-push-action@v6
           with:
             push: true
-            tags: networkthor/webserver-cicd:$NEW_VERSION
+            tags: networkthor/webserver-cicd:${{  env.NEW_VERSION }}
 
         # - name: build new image
         #   run: |
