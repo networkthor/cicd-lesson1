@@ -54,17 +54,17 @@ jobs:
     deploy-to-env:
       runs-on: ubuntu-latest
       steps:
-      - name: configure ssh
-        run: |
-          mkdir -p ~/.ssh/aws
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/aws/cicd-key.pem
-          chmod 400 ~/.ssh/aws/cicd-key.pem
-          cat << EOF >> ~/.ssh/config
-          Host github.com
-              StrictHostKeyChecking no
-              UserKnownHostsFile=/dev/null
-              ForwardAgent yes
-          EOF
+      # - name: configure ssh
+      #   run: |
+      #     mkdir -p ~/.ssh/aws
+      #     echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/aws/cicd-key.pem
+      #     chmod 400 ~/.ssh/aws/cicd-key.pem
+      #     cat << EOF >> ~/.ssh/config
+      #     Host github.com
+      #         StrictHostKeyChecking no
+      #         UserKnownHostsFile=/dev/null
+      #         ForwardAgent yes
+      #     EOF
       
       # - name: deploy to env
       #   run: |
