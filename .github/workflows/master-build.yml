@@ -1,0 +1,72 @@
+name: Master build
+
+run-name: ${{ github.actor }} is executing Master build
+
+
+
+on: 
+    pull_request:
+      branches:
+        - 'main'
+      types:
+        - closed
+
+
+
+env:
+    BUILD_NUMBER: ${{  github.run_number }}
+
+jobs:
+    test-build:
+        runs-on: ubuntu-latest
+        steps:
+        - name: clone repo
+          uses: actions/checkout@v4
+
+        - name: Login to Docker Hub
+          uses: docker/login-action@v3
+          with:
+            username: ${{ secrets.DOCKER_USERNAME }}
+            password: ${{ secrets.DOCKER_PASSWORD }} 
+
+        - name: generate new version
+          run: |
+            commit_short_hash=$(git rev-parse --short=5 HEAD)
+            new_tag=${{  env.BUILD_NUMBER }}-$commit_short_hash
+            echo "NEW_VERSION=dev" >> $GITHUB_ENV
+        
+        - name: Build and push
+          uses: docker/build-push-action@v6
+          with:
+            push: true
+            tags: networkthor/webserver-cicd:master
+    
+    deploy-to-env:
+      needs: [test-build]
+      runs-on: ubuntu-latest
+      steps:
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: deploy to env
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 34.241.20.181
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+          
+            echo ${{ secrets.DOCKER_PASSWORD }} | docker login --username  ${{ secrets.DOCKER_USERNAME }} --password-stdin
+            
+            docker stop cicd-webserver
+            docker rm -f cicd-webserver
+            docker rmi networkthor/webserver-cicd:master
+            docker run -d --name cicd-webserver -p 80:80 networkthor/webserver-cicd:master
+      
+
+
