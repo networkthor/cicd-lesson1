@@ -6,22 +6,10 @@ run-name: ${{ github.actor }} is executing Test build on ${{ inputs.ENV_NAME }} 
 
 on: 
     push:
-    workflow_dispatch:
-        inputs:
-          ENV_NAME:
-            description: 'Environment name'
-            required: true
-            type: choice
-            default: dev
-            options:
-            - dev
-            - staging
-            - production
-          MANUAL_RUN:
-            description: 'Run manually?'
-            required: false
-            type: boolean
-            default: false
+      branches:
+        - 'dev-**'
+
+
 
 env:
     BUILD_NUMBER: ${{  github.run_number }}
