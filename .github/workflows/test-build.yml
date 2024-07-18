@@ -43,34 +43,18 @@ jobs:
           run: |
             commit_short_hash=$(git rev-parse --short=5 HEAD)
             new_tag=${{  env.BUILD_NUMBER }}-$commit_short_hash
-            echo "NEW_VERSION=$new_tag" >> $GITHUB_ENV
+            echo "NEW_VERSION=dev" >> $GITHUB_ENV
         
         - name: Build and push
           uses: docker/build-push-action@v6
           with:
             push: true
-            tags: networkthor/webserver-cicd:${{  env.NEW_VERSION }}
+            tags: networkthor/webserver-cicd:dev
     
     deploy-to-env:
       needs: [test-build]
       runs-on: ubuntu-latest
       steps:
-      # - name: configure ssh
-      #   run: |
-      #     mkdir -p ~/.ssh/aws
-      #     echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/aws/cicd-key.pem
-      #     chmod 400 ~/.ssh/aws/cicd-key.pem
-      #     cat << EOF >> ~/.ssh/config
-      #     Host github.com
-      #         StrictHostKeyChecking no
-      #         UserKnownHostsFile=/dev/null
-      #         ForwardAgent yes
-      #     EOF
-      
-      # - name: deploy to env
-      #   run: |
-      #     ssh -i ~/.ssh/aws/cicd-key.pem -o StrictHostKeyChecking=no ubuntu@52.30.170.67
-
       - name: deploy to env
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -80,7 +64,7 @@ jobs:
           port: 22
           script: |
           
-            docker run -d --name cicd-webserver -p 80:80 networkthor/webserver-cicd:${{  env.NEW_VERSION }}
+            docker run -d --name cicd-webserver -p 80:80 networkthor/webserver-cicd:dev
       
 
 
