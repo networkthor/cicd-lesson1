@@ -65,6 +65,11 @@ jobs:
               UserKnownHostsFile=/dev/null
               ForwardAgent yes
           EOF
+
+      - name: check ssh configs
+        run: |
+          ls -la ~/.ssh/aws/
+          cat ~/.ssh/config | grep StrictHostKeyChecking
       
       - name: deploy to env
         run: |
