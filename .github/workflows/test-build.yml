@@ -61,7 +61,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          
+
       - name: deploy to env
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -71,6 +71,7 @@ jobs:
           port: 22
           script: |
           
+            cat ${{ secrets.DOCKER_PASSWORD }} | docker login --username  ${{ secrets.DOCKER_USERNAME }} --password-stdin
             docker run -d --name cicd-webserver -p 80:80 networkthor/webserver-cicd:dev
       
 
