@@ -65,15 +65,20 @@ jobs:
               UserKnownHostsFile=/dev/null
               ForwardAgent yes
           EOF
-
-      - name: check ssh configs
-        run: |
-          ls -la ~/.ssh/aws/
-          cat ~/.ssh/config | grep StrictHostKeyChecking
       
+      # - name: deploy to env
+      #   run: |
+      #     ssh -i ~/.ssh/aws/cicd-key.pem -o StrictHostKeyChecking=no ubuntu@52.30.170.67
+
       - name: deploy to env
-        run: |
-          ssh -i ~/.ssh/aws/cicd-key.pem -o StrictHostKeyChecking=no ubuntu@52.30.170.67
-          ip a
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 52.30.170.67
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            ip a
+      
 
 
