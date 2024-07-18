@@ -42,7 +42,7 @@ jobs:
         - name: generate new version
           run: |
             commit_short_hash=$(git rev-parse --short=5 HEAD)
-            new_tag=${{ inputs.ENV_NAME }}-${{  env.BUILD_NUMBER }}-$commit_short_hash
+            new_tag=${{  env.BUILD_NUMBER }}-$commit_short_hash
             echo "NEW_VERSION=$new_tag" >> $GITHUB_ENV
         
         - name: Build and push
@@ -52,6 +52,7 @@ jobs:
             tags: networkthor/webserver-cicd:${{  env.NEW_VERSION }}
     
     deploy-to-env:
+      needs: [test-build]
       runs-on: ubuntu-latest
       steps:
       # - name: configure ssh
