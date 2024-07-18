@@ -75,6 +75,7 @@ jobs:
             
             docker stop cicd-webserver
             docker rm -f cicd-webserver
+            docker rmi networkthor/webserver-cicd:dev
             docker run -d --name cicd-webserver -p 80:80 networkthor/webserver-cicd:dev
       
 
