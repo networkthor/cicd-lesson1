@@ -65,6 +65,12 @@ jobs:
               UserKnownHostsFile=/dev/null
               ForwardAgent yes
           EOF
+      
+      - name: prepare ssh agent
+        run: |
+          eval `ssh-agent`
+          ssh-add
+          echo "SSH_AUTH_SOCK=$(echo $SSH_AUTH_SOCK)" >> $GITHUB_ENV
 
       - name: check ssh configs
         run: |
