@@ -57,7 +57,7 @@ jobs:
       - name: configure ssh
         run: |
           mkdir -p ~/.ssh/aws
-          echo ${{ secrets.SSH_PRIVATE_KEY }} >> ~/.ssh/aws/cicd-key.pem
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/aws/cicd-key.pem
           chmod 400 ~/.ssh/aws/cicd-key.pem
       
       - name: deploy to env
