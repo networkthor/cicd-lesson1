@@ -52,6 +52,8 @@ jobs:
     
       - name: terraform init
         run: |
+          export AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }}
+          export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
           cd infra/terraform/environments/staging/eu-west-1/network
           terraform init
 
