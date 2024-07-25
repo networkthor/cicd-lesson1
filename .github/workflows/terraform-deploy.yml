@@ -41,8 +41,8 @@ jobs:
 
       - name: login to aws
         run: |
-          export AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }}
-          export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          echo AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }} >> $GITHUB_ENV
+          export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} >> $GITHUB_ENV
       
       - name: setup ssh
         uses: MrSquaare/ssh-setup-action@v3
@@ -52,8 +52,6 @@ jobs:
     
       - name: terraform init
         run: |
-          export AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }}
-          export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
           cd infra/terraform/environments/staging/eu-west-1/network
           terraform init
 
