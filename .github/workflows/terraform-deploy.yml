@@ -32,6 +32,15 @@ on:
           - network
           - alb
           - asg
+        AWS_REGION:
+          description: Region to deploy
+          type: choice
+          required: true
+          default: eu-west-1
+          options:
+          - eu-west-1
+          - us-east-1
+
         
 
 
@@ -45,7 +54,7 @@ jobs:
       defaults:
         run:
           shell: bash
-          working-directory: infra/terraform/environments/${{ inputs.ENV_NAME }}/eu-west-1/${{ inputs.MODULE_NAME }}
+          working-directory: infra/terraform/environments/${{ inputs.ENV_NAME }}/${{ inputs.AWS_REGION }}/${{ inputs.MODULE_NAME }}
       steps:
       - name: clone repo
         uses: actions/checkout@v4
@@ -58,7 +67,7 @@ jobs:
       - name: login to aws
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-region: eu-west-1
+          aws-region: ${{ inputs.AWS_REGION }}
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       
@@ -97,7 +106,7 @@ jobs:
           secret: ${{ github.TOKEN }}
           approvers: networkthor
           minimum-approvals: 1
-          issue-title: "deploying ${{ inputs.MODULE_NAME }} module to ${{ inputs.ENV_NAME }}"
+          issue-title: "deploying ${{ inputs.MODULE_NAME }} module to ${{ inputs.ENV_NAME }} on ${{ inputs.AWS_REGION }}"
           issue-body: ${{ env.TG_PLAN }}
           exclude-workflow-initiator-as-approver: false
           additional-approved-words: ''
