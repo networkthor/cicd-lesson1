@@ -1,6 +1,6 @@
 name: Terraform deploy
 
-run-name: Terraform deploying ${{ inputs.ENV_NAME }} module to ${{ inputs.ENV_NAME }} environment
+run-name: Terraform deploying ${{ inputs.MODULE_NAME }} module to ${{ inputs.ENV_NAME }} environment
 
 
 
@@ -76,6 +76,29 @@ jobs:
       - name: terraform plan
         run: |
           terraform plan -out=saved_plan
+      
+      - name: plan summary
+        id: plan_summary
+        run: |
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          echo "TG_PLAN<<$EOF" >> "$GITHUB_ENV"
+          echo '```' >> "$GITHUB_ENV"
+          terraform show saved_plan -no-color >> "$GITHUB_ENV"
+          echo '```' >> "$GITHUB_ENV"
+          echo "$EOF" >> "$GITHUB_ENV"
+          
+      - name: create issue for manual approval when deploying to STG/PROD
+        if: ${{ inputs.ENV_NAME == 'staging' }}
+        uses: trstringer/manual-approval@v1.9.0
+        with:
+          secret: ${{ github.TOKEN }}
+          approvers: networkthor
+          minimum-approvals: 1
+          issue-title: "deploying ${{ inputs.MODULE_NAME }} module to ${{ inputs.ENV_NAME }}"
+          issue-body: ${{ env.TG_PLAN }}
+          exclude-workflow-initiator-as-approver: false
+          additional-approved-words: ''
+          additional-denied-words: ''
       
       - name: terraform apply
         run: |
