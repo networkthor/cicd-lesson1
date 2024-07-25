@@ -1,0 +1,9 @@
+cidr_block = "172.20.8.0/22"
+environment = "qa"
+public_subnets = ["172.20.8.0/24", "172.20.10.0/24"]
+private_subnets = ["172.20.9.0/24", "172.20.11.0/24"]
+lb_type = "application"
+iam_instance_profile = "EC2-SSM-Role"
+ami_id = "ami-0776c814353b4814d"
+key_name = "mentor-admin"
+volume_size = 40

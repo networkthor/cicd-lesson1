@@ -1,0 +1,63 @@
+name: Terraform deploy
+
+run-name: Terraform deploy to ${{ inputs.ENV_NAME }} environment
+
+
+
+on: 
+    # push:
+    #   # branches:
+    #   #   - 'dev-**'
+    #   paths:
+    #     - 'infra/**'
+    workflow_dispatch:
+      inputs:
+        ENV_NAME:
+          description: Environment to deploy
+          type: choice
+          required: true
+          default: dev
+          options:
+          - dev
+          - staging
+          - production
+
+
+
+env:
+    BUILD_NUMBER: ${{  github.run_number }}
+
+jobs: 
+    deploy-to-env:
+      runs-on: ubuntu-latest
+      steps:
+      - name: clone repo
+        uses: actions/checkout@v4
+      
+      - name: install terraform binary
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.5.5"
+
+      - name: login to aws
+        run: |
+          export AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }}
+          export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: terraform validate
+        run: |
+          cd infra/terraform/environments/staging/eu-west-1/network
+          terraform validate
+      
+      - name: terraform init
+        run: |
+          cd infra/terraform/environments/staging/eu-west-1/network
+          terraform init
+      
+      - name: terraform plan
+        run: |
+          cd infra/terraform/environments/staging/eu-west-1/network
+          terraform plan
+      
+
+
