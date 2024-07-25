@@ -1,6 +1,6 @@
 name: Terraform deploy
 
-run-name: Terraform deploy to ${{ inputs.ENV_NAME }} environment
+run-name: Terraform deploying ${{ inputs.ENV_NAME }} module to ${{ inputs.ENV_NAME }} environment
 
 
 
@@ -75,7 +75,10 @@ jobs:
       
       - name: terraform plan
         run: |
-          terraform plan
+          terraform plan -out=saved_plan
       
+      - name: terraform apply
+        run: |
+          terraform apply -auto-approve saved_plan
 
 
