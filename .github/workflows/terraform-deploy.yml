@@ -1,6 +1,6 @@
 name: Terraform deploy
 
-run-name: Terraform deploying ${{ inputs.MODULE_NAME }} module to ${{ inputs.ENV_NAME }} environment
+run-name: Terraform ${{ inputs.DEPLOY_MODE }}ing ${{ inputs.MODULE_NAME }} module to ${{ inputs.ENV_NAME }} environment
 
 permissions:
   id-token: write
@@ -120,7 +120,7 @@ jobs:
           secret: ${{ github.TOKEN }}
           approvers: networkthor
           minimum-approvals: 1
-          issue-title: "deploying ${{ inputs.MODULE_NAME }} module to ${{ inputs.ENV_NAME }} on ${{ inputs.AWS_REGION }}"
+          issue-title: "${{ inputs.DEPLOY_MODE }}ing ${{ inputs.MODULE_NAME }} module to ${{ inputs.ENV_NAME }} on ${{ inputs.AWS_REGION }}"
           issue-body: ${{ env.TG_PLAN }}
           exclude-workflow-initiator-as-approver: false
           additional-approved-words: ''
