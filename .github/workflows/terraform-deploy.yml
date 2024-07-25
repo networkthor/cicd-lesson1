@@ -39,6 +39,10 @@ env:
 jobs: 
     deploy-to-env:
       runs-on: ubuntu-latest
+      defaults:
+        run:
+          shell: bash
+          working-directory: infra/terraform/environments/${{ inputs.ENV_NAME }}/eu-west-1/${{ inputs.MODULE_NAME }}
       steps:
       - name: clone repo
         uses: actions/checkout@v4
@@ -63,17 +67,14 @@ jobs:
     
       - name: terraform init
         run: |
-          cd infra/terraform/environments/${{ inputs.ENV_NAME }}/eu-west-1/${{ inputs.MODULE_NAME }}
           terraform init
 
       - name: terraform validate
         run: |
-          cd infra/terraform/environments/${{ inputs.ENV_NAME }}/eu-west-1/${{ inputs.MODULE_NAME }}
           terraform validate
       
       - name: terraform plan
         run: |
-          cd infra/terraform/environments/${{ inputs.ENV_NAME }}/eu-west-1/${{ inputs.MODULE_NAME }}
           terraform plan
       
 
