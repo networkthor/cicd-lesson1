@@ -43,6 +43,12 @@ jobs:
         run: |
           export AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }}
           export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      
+      - name: setup ssh
+        uses: MrSquaare/ssh-setup-action@v3
+        with:
+          host: github.com
+          private-key: ${{ secrets.CICD_SSH_PRIVATE_KEY }}
     
       - name: terraform init
         run: |
