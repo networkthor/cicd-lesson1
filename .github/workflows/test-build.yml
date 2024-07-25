@@ -10,6 +10,7 @@ on:
         - 'dev-**'
       paths-ignore:
         - 'infra/**'
+        - '.github/**'
 
 
 
