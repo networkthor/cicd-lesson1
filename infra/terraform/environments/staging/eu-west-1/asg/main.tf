@@ -1,5 +1,5 @@
 module "elb" {
-  source = "git@github.com/networkthor/terraform-module-elb.git?ref=XYZ-6105-refactor-elb-module"
+  source = "git@github.com:networkthor/terraform-module-elb.git?ref=XYZ-6105-refactor-elb-module"
   environment        = var.environment
   public_subnet1_id  = module.network.public_subnets_id[0]
   public_subnet2_id  = module.network.public_subnets_id[1]

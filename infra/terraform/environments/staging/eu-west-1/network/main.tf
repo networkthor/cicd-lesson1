@@ -1,6 +1,6 @@
 // Create Network resources
 module "network" {
-  source = "git@github.com/networkthor/terraform-module-network.git?ref=master"
+  source = "git@github.com:networkthor/terraform-module-network.git?ref=master"
   environment     = var.environment
   cidr_block      = var.cidr_block
   private_subnets = var.private_subnets

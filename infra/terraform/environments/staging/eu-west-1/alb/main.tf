@@ -1,5 +1,5 @@
 module "autoscaling" {
-  source = "git@github.com/networkthor/terraform-modules-autoscaling.git?ref=master"
+  source = "git@github.com:networkthor/terraform-modules-autoscaling.git?ref=master"
   vpc_id                 = module.network.vpc_id
   elb_security_group_id  = module.elb.security_groups_id
   environment            = var.environment
