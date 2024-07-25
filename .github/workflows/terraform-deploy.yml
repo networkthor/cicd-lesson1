@@ -43,16 +43,16 @@ jobs:
         run: |
           export AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }}
           export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    
+      - name: terraform init
+        run: |
+          cd infra/terraform/environments/staging/eu-west-1/network
+          terraform init
 
       - name: terraform validate
         run: |
           cd infra/terraform/environments/staging/eu-west-1/network
           terraform validate
-      
-      - name: terraform init
-        run: |
-          cd infra/terraform/environments/staging/eu-west-1/network
-          terraform init
       
       - name: terraform plan
         run: |
