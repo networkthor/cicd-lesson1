@@ -40,6 +40,14 @@ on:
           options:
           - eu-west-1
           - us-east-1
+        DEPLOY_MODE:
+          description: Do you want to apply or destroy
+          type: choice
+          required: true
+          default: apply
+          options:
+          - apply
+          - destroy
 
         
 
@@ -85,9 +93,15 @@ jobs:
         run: |
           terraform validate
       
-      - name: terraform plan
+      - name: terraform apply plan
+        if: ${{ inputs.DEPLOY_MODE == 'apply' }}
         run: |
           terraform plan -out=saved_plan
+      
+      - name: terraform destroy plan
+        if: ${{ inputs.DEPLOY_MODE == 'destroy' }}
+        run: |
+          terraform plan -destroy -out=saved_plan
       
       - name: plan summary
         id: plan_summary
@@ -113,7 +127,13 @@ jobs:
           additional-denied-words: ''
       
       - name: terraform apply
+        if: ${{ inputs.DEPLOY_MODE == 'apply' }}
         run: |
           terraform apply -auto-approve saved_plan
+      
+      - name: terraform destroy
+        if: ${{ inputs.DEPLOY_MODE == 'destroy' }}
+        run: |
+          terraform destroy -auto-approve
 
 
