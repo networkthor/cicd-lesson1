@@ -2,7 +2,10 @@ name: Terraform deploy
 
 run-name: Terraform deploying ${{ inputs.MODULE_NAME }} module to ${{ inputs.ENV_NAME }} environment
 
-
+permissions:
+  id-token: write
+  contents: read
+  issues: write
 
 on: 
     # push:
