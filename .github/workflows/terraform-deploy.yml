@@ -40,9 +40,11 @@ jobs:
           terraform_version: "1.5.5"
 
       - name: login to aws
-        run: |
-          echo AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }} >> $GITHUB_ENV
-          export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} >> $GITHUB_ENV
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: eu-west-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       
       - name: setup ssh
         uses: MrSquaare/ssh-setup-action@v3
